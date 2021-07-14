@@ -6,13 +6,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"runtime"
-	"strings"
 )
 
 const (
 	CURRENT_VERSION_FILE = "crosstools-installer-version.data"
+	PATH_SET_FILE        = "crosstools-installer-path.data"
 	DIRECTORY_NAME       = "crosstools-installer"
 )
 
@@ -29,30 +28,18 @@ func programFolderToSaveTo() string {
 	return ""
 }
 
-func setPath(path string) {
-	switch runtime.GOOS {
-	case "windows":
-		output, err := exec.Command("Path").Output()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Failed to get PATH info to check for existing crosstools-installer")
-			log.Fatalln(err)
-		}
-		outputStr := strings.Replace(string(output), "PATH=", "", 1) // remove "PATH=" out of output
-		paths := strings.Split(outputStr, ";")
-		for _, pathFromPaths := range paths {
-			if path == pathFromPaths {
-				return // path has already been set, so end this function
-			}
-		}
-		err = exec.Command("setx Path \"%Path%;" + path + "\" /m").Run()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "Failed to set PATH for crosstools-installer")
-			log.Fatalln(err)
-		}
-	default:
-		log.Fatalln("Path for crosstools-installer has not been set")
-	}
-}
+// func setPath(path string) {
+// 	switch runtime.GOOS {
+// 	case "windows":
+// 		err := exec.Command("setx", "PATH", "%PATH%;"+path+"").Run()
+// 		if err != nil {
+// 			fmt.Fprintln(os.Stderr, "Failed to set PATH for crosstools-installer")
+// 			log.Fatalln(err)
+// 		}
+// 	default:
+// 		log.Fatalln("Path for crosstools-installer has not been set")
+// 	}
+// }
 
 func InstallSelf() {
 	check := func(e error) {
@@ -108,9 +95,6 @@ func InstallSelf() {
 		check(err)
 	}
 
-	// Set PATH
-	setPath(directory + string(os.PathSeparator) + EXECUTABLE_NAME)
-
 	fmt.Println("Successfully installed crosstools-installer, enjoy using it!")
 }
 
@@ -132,6 +116,6 @@ func InstallSelf() {
 
 // 	if _, err := os.Stat(CURRENT_VERSION_FILE); os.IsNotExist(err) {
 // 		fmt.Fprintf(os.Stderr, "File '%s' does not exist so we don't know what version crosstools-installer is in.\nWe will install the latest version anyways, next time please do not delete the '%s' file.\n", CURRENT_VERSION_FILE, CURRENT_VERSION_FILE)
-// 		os.PathSeparator
+// 		InstallSelf()
 // 	}
 // }

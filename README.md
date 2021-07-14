@@ -13,6 +13,15 @@ When using CrossTools Installer, you must be online, or else it won't work.
 
 ## Downloading
 
+Please run the correct binary for your architecture. For example, if you are running a 32-bit of this installer and your OS is 64-bit, this installer will not work.
+
+## Errors when downloading?
+
+```
+Install self error: Failed to install crosstools-installer self
+panic: mkdir C:\Program Files\crosstools-installer: Access is denied.
+```
+If you get this error, then you didn't run the terminal as an administrator. You must run as an administrator in order for the installer to work.
 
 ## Uninstalling
 
