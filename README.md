@@ -1,6 +1,10 @@
 # crosstools-installer
 The official CrossTools CLI Installer
 
+## Archived reason
+
+We felt that it was a bit unnecessary to have an installer for you, when we could already use something like powershell/shell to install crosstools for you. Instead, we can just update crosstools ourselves by just using it ourselves.
+
 ## What and why
 
 CrossTools Installer is a CLI application that installs CrossTools for you, without you having to manually update CrossTools yourself. You are able to update CrossTools very easily.
